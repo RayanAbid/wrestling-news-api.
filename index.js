@@ -18,7 +18,7 @@ app.get("/get-news", async (req, res) => {
       devtools: false,
     });
     const page = await browser.newPage();
-    //   await page.setDefaultNavigationTimeout(0);
+    await page.setDefaultNavigationTimeout(0);
     page.goto("https://cultaholic.com/posts/categories/news", {
       waitUntil: "domcontentloaded",
     });
@@ -64,6 +64,7 @@ app.get("/get-news", async (req, res) => {
     console.log("scrpae completed");
 
     await browser.close();
+
     console.log("browser closed");
 
     var result = [];
