@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const puppeteer = require("puppeteer");
 
+// cors
 app.use(cors());
 
 app.get("/", (req, res) => {
