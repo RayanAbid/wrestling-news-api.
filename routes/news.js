@@ -92,6 +92,96 @@ router.get("/get-cultaholic-news", async (req, res) => {
   }
 });
 
+router.get("/get-wrestletalk-news", async (req, res) => {
+  let browser = null;
+  try {
+    const browser = await puppeteer.launch({
+      headless: false,
+      args: ["--single-process", "--no-zygote", "--no-sandbox"],
+      devtools: false,
+    });
+    const page = await browser.newPage();
+    await page.setDefaultNavigationTimeout(0);
+    page.goto("https://wrestletalk.com/news", {
+      waitUntil: "domcontentloaded",
+    });
+    await page.waitForSelector(
+      "section.search-block.news-block div.search-result h6 > a"
+    );
+
+    console.log("Browser started and navigated");
+
+    const images = await page.evaluate(() => {
+      const srcs = Array.from(
+        document.querySelectorAll("div.search-result figure > a > img")
+      ).map((image) => image.getAttribute("src"));
+      return srcs;
+    });
+
+    const dates = await page.evaluate(() => {
+      return Array.from(
+        document.querySelectorAll("div.search-result div > p")
+      ).map((x) => x.innerText.trim());
+    });
+    const titleArr = await page.evaluate(() => {
+      return Array.from(
+        document.querySelectorAll(
+          "section.search-block.news-block div.search-result h6 > a"
+        )
+      ).map((x) => x.innerText.trim());
+    });
+    const postLink = await page.evaluate(() => {
+      return Array.from(
+        document.querySelectorAll(
+          "section.search-block.news-block div.search-result h6 > a"
+        )
+      ).map((x) => x.href.trim());
+    });
+    // const description = await page.evaluate(() => {
+    //   return Array.from(
+    //     document.querySelectorAll(
+    //       ".media-body.p-mb-none-child.media-margin30 p"
+    //     )
+    //   ).map((x) => x.innerText.trim());
+    // });
+    console.log("scrpae completed");
+
+    await browser.close();
+
+    console.log("browser closed");
+
+    var result = [];
+    await titleArr.map((title, index) => {
+      result.push({
+        title,
+        description: "Read more...",
+        postLink: postLink[index],
+        date: dates[index],
+        image: images[index],
+        source: "wrestletalk.com",
+      });
+    });
+
+    res.send({
+      status: "🤼 Success",
+      success: true,
+      resultLength: result?.length,
+      result,
+    });
+  } catch (err) {
+    res.send({
+      status: "🤼 Failed",
+      success: false,
+      resultLength: 0,
+      result: [],
+    });
+  } finally {
+    if (browser !== null) {
+      await browser.close();
+    }
+  }
+});
+
 router.get("/get-wwe-news", async (req, res) => {
   let browser = null;
   try {
