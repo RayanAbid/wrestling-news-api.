@@ -98,7 +98,7 @@ router.get("/get-wrestletalk-news", async (req, res) => {
   let browser = null;
   try {
     const browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       args: ["--single-process", "--no-zygote", "--no-sandbox"],
       devtools: false,
     });
@@ -268,7 +268,7 @@ router.get("/get-aew-news", async (req, res) => {
   let browser = null;
   try {
     const browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       args: ["--single-process", "--no-zygote", "--no-sandbox"],
       devtools: false,
     });
@@ -361,7 +361,7 @@ router.get("/get-njpw-news", async (req, res) => {
   let browser = null;
   try {
     const browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       args: ["--single-process", "--no-zygote", "--no-sandbox"],
       devtools: false,
     });
@@ -448,7 +448,7 @@ router.get("/get-roh-news", async (req, res) => {
   let browser = null;
   try {
     const browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       args: ["--single-process", "--no-zygote", "--no-sandbox"],
       devtools: false,
     });
@@ -537,7 +537,7 @@ router.get("/get-aaa-news", async (req, res) => {
   let browser = null;
   try {
     const browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       args: ["--single-process", "--no-zygote", "--no-sandbox"],
       devtools: false,
     });
@@ -628,7 +628,7 @@ router.get("/get-impact-news", async (req, res) => {
   let browser = null;
   try {
     const browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       args: ["--single-process", "--no-zygote", "--no-sandbox"],
       devtools: false,
     });
