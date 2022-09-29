@@ -1,6 +1,10 @@
 const express = require("express");
 var router = express.Router();
 const puppeteer = require("puppeteer");
+const News = require("../models/News");
+
+// Add pwinsider
+// Add fightful
 
 // Cultaholic
 router.get("/get-cultaholic-news", async (req, res) => {
@@ -512,13 +516,27 @@ router.get("/get-roh-news", async (req, res) => {
       });
     });
 
-    res.send({
-      status: "🤼 Success",
-      success: true,
-      resultLength: result?.length,
-      result,
-    });
+    try {
+      await News.insertMany(result, { ordered: false, silent: true });
+
+      res.send({
+        status: "🤼 Success",
+        success: true,
+        resultLength: result?.length,
+        result,
+      });
+    } catch (err) {
+      console.error("error", err);
+      res.send({
+        status: "🤼 Success, No new news from this source",
+        success: true,
+        resultLength: result?.length,
+        result,
+      });
+    }
   } catch (err) {
+    console.error("Error", err);
+
     res.send({
       status: "🤼 Failed",
       success: false,
