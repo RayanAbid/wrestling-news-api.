@@ -704,12 +704,27 @@ router.get("/get-impact-news", async (req, res) => {
       });
     });
 
-    res.send({
-      status: "🤼 Success",
-      success: true,
-      resultLength: result?.length,
-      result,
-    });
+    try {
+      await News.insertMany(result, { ordered: false, silent: true }).then(
+        (data) => {
+          console.log("datadata", data);
+          res.send({
+            status: "🤼 Success",
+            success: true,
+            resultLength: result?.length,
+            result,
+          });
+        }
+      );
+    } catch (err) {
+      console.error("error", err);
+      res.send({
+        status: "🤼 Success, No new news from this source",
+        success: true,
+        resultLength: result?.length,
+        result,
+      });
+    }
   } catch (err) {
     res.send({
       status: "🤼 Failed",
