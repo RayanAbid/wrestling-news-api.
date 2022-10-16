@@ -12,7 +12,7 @@ app.use(express.static("views"));
 app.use(cors());
 
 // call routes
-const news = require("./routes/News.js");
+// const news = require("./routes/News.js");
 require("./cron/cronJob.js")();
 
 mongoose
@@ -36,7 +36,7 @@ mongoose
       // res.sendFile("./");
     });
 
-    app.use("/news", news);
+    // app.use("/news", news);
 
     app.listen(process.env.PORT || 3001, () => {
       console.log("Started");
