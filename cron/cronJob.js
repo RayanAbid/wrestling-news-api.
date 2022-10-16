@@ -15,7 +15,7 @@ module.exports = async () => {
   let browser;
 
   browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     args: ["--single-process", "--no-zygote", "--no-sandbox"],
     devtools: false,
   });
