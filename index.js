@@ -12,7 +12,7 @@ app.use(express.static("views"));
 app.use(cors());
 
 // call routes
-const news = require("./routes/News");
+const news = require("./routes/News.js");
 require("./cron/cronJob.js")();
 
 mongoose
