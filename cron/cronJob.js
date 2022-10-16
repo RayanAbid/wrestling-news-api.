@@ -31,11 +31,11 @@ module.exports = async () => {
   });
 
   // AAA
-  cron.schedule("0 */2 * * * *", async () => {
-    await fecthCultaholicNews(browser);
-    await fecthWrestleTalkNews(browser);
+  cron.schedule("0 */8 * * *", async () => {
     await fecthwweNews(browser);
     await fecthAEWNews(browser);
+    await fecthCultaholicNews(browser);
+    await fecthWrestleTalkNews(browser);
     await fecthNJPWNews(browser);
     await fecthROHNews(browser);
     await fecthAAANews(browser);

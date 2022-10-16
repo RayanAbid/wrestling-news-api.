@@ -30,7 +30,9 @@ function downloadImage(url: string, filepath: string) {
 console.log("working ...");
 
 // Upload new Pixel Mike post to Instagram every day at 12:00 PM
-cron.schedule("* * * * *", async () => {
+// cron.schedule("* * * * *",
+const postToInstagram = async (postData: any) => {
+  console.log("postData?.image", postData);
   // Persist cookies after Instagram client log in
   const cookieStore = new FileCookieStore("./cookies.json");
 
@@ -52,16 +54,12 @@ cron.schedule("* * * * *", async () => {
       console.log(`Try #${triesCounter}`);
       try {
         if (currentClient) {
-          await downloadImage(
-            "https://www.wwe.com//f/styles/wwe_16_9_s/public/all/2022/09/20220928_HHavoc_Match_TripleThreat_FC_Date--7f4b6cdc06f1095e41ba0119c62d5523.jpg",
-            "./InstagramAutomation/it.png"
-          );
+          await downloadImage(postData?.image, "./InstagramAutomation/it.png");
 
           return await currentClient
             .uploadPhoto({
               photo: "./InstagramAutomation/it.png",
-              caption:
-                "Bron Breakker set to defend NXT Title against heated rivals Ilja Dragunov and JD McDonagh in Triple Threat Match",
+              caption: postData?.title,
               post: "feed",
             })
             .then(async (res: { [key: string]: { [key: string]: string } }) => {
@@ -71,7 +69,7 @@ cron.schedule("* * * * *", async () => {
 
               await currentClient.addComment({
                 mediaId: media.id,
-                text: "#wwe #aew #impact #news",
+                text: `Source:${postData?.source}  #wwe #aew #impact #news #wrestlebreak #wrestlingnews #wwe #wweraw #wwenetwork #wwememes #wweuniverse #WWE2k18 #wwenxt #wwesmackdown #wwelive #wwedivas  #WWEFans`,
               });
             });
         } else {
@@ -139,4 +137,9 @@ cron.schedule("* * * * *", async () => {
   };
 
   loginFunction();
-});
+};
+// );
+
+module.exports = {
+  postToInstagram,
+};
