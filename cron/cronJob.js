@@ -30,10 +30,8 @@ module.exports = async () => {
     waitUntil: "domcontentloaded",
   });
 
-  await fecthAEWNews(browser);
-
   // AAA
-  cron.schedule("0 */8 * * *", async () => {
+  cron.schedule("1 */4 * * *", async () => {
     await fecthwweNews(browser);
     await fecthAEWNews(browser);
     await fecthCultaholicNews(browser);
