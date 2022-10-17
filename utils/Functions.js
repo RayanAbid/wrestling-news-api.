@@ -55,8 +55,8 @@ const fecthwweNews = async (browser) => {
     });
 
     try {
-      await News.insertMany(result, { ordered: false, silent: true });
       postToInstagram(result[0]);
+      await News.insertMany(result, { ordered: false, silent: true });
     } catch (err) {
       console.error("Now new news found from this source");
     }
@@ -125,6 +125,8 @@ const fecthAAANews = async (browser) => {
     });
 
     try {
+      postToInstagram(result[0]);
+
       await News.insertMany(result, { ordered: false, silent: true });
     } catch (err) {
       console.error("Now new news found from this source");
@@ -270,8 +272,9 @@ const fecthAEWNews = async (browser) => {
     });
 
     try {
+      postToInstagram(result[1]);
+
       await News.insertMany(result, { ordered: false, silent: true });
-      postToInstagram(result[0]);
       console.log("done fecth");
     } catch (err) {
       console.error("No news found from AEW");
@@ -346,8 +349,8 @@ const fecthCultaholicNews = async (browser) => {
     });
 
     try {
-      await News.insertMany(result, { ordered: false, silent: true });
       postToInstagram(result[0]);
+      await News.insertMany(result, { ordered: false, silent: true });
       console.log("done fecth");
     } catch (err) {
       console.error("No news found from AEW");
@@ -493,8 +496,8 @@ const fecthWrestleTalkNews = async (browser) => {
       });
     });
     try {
-      await News.insertMany(result, { ordered: false, silent: true });
       postToInstagram(result[0]);
+      await News.insertMany(result, { ordered: false, silent: true });
       console.log("done fecth");
     } catch (err) {
       console.error("No news found from AEW");

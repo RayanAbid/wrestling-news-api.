@@ -18,6 +18,7 @@ const tough_cookie_filestore2_1 = __importDefault(require("tough-cookie-filestor
 const fs_1 = __importDefault(require("fs"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const https_1 = __importDefault(require("https"));
+const node_url_shortener_1 = __importDefault(require("node-url-shortener"));
 dotenv_1.default.config();
 function downloadImage(url, filepath) {
     return new Promise((resolve, reject) => {
@@ -52,6 +53,12 @@ const postToInstagram = (postData) => __awaiter(void 0, void 0, void 0, function
     });
     const instagramPostFunction = (currentClient) => __awaiter(void 0, void 0, void 0, function* () {
         let triesCounter = 0;
+        var postURL = yield node_url_shortener_1.default.short(postData === null || postData === void 0 ? void 0 : postData.postLink, function (err, url) {
+            console.log("postURLpostURL", url);
+            return url;
+        });
+        console.log("postURLpostURL", postURL);
+        return;
         while (triesCounter < 3) {
             console.log(`Try #${triesCounter}`);
             try {
@@ -60,7 +67,7 @@ const postToInstagram = (postData) => __awaiter(void 0, void 0, void 0, function
                     return yield currentClient
                         .uploadPhoto({
                         photo: "./InstagramAutomation/it.png",
-                        caption: postData === null || postData === void 0 ? void 0 : postData.title,
+                        caption: (postData === null || postData === void 0 ? void 0 : postData.title) + " " + postURL,
                         post: "feed",
                     })
                         .then((res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -68,7 +75,7 @@ const postToInstagram = (postData) => __awaiter(void 0, void 0, void 0, function
                         console.log(`https://www.instagram.com/p/${media.code}/`);
                         yield currentClient.addComment({
                             mediaId: media.id,
-                            text: `Source:${postData === null || postData === void 0 ? void 0 : postData.source}  #wwe #aew #impact #news #wrestlebreak #wrestlingnews #wwe #wweraw #wwenetwork #wwememes #wweuniverse #WWE2k18 #wwenxt #wwesmackdown #wwelive #wwedivas  #WWEFans`,
+                            text: `Source:${postData === null || postData === void 0 ? void 0 : postData.source} ${postData === null || postData === void 0 ? void 0 : postData.description} #wwe #aew #impact #news #wrestlebreak #wrestlingnews #wwe #wweraw #wwenetwork #wwememes #wweuniverse #WWE2k18 #wwenxt #wwesmackdown #wwelive #wwedivas  #WWEFans`,
                         });
                     }));
                 }

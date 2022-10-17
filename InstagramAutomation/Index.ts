@@ -59,7 +59,7 @@ const postToInstagram = async (postData: any) => {
           return await currentClient
             .uploadPhoto({
               photo: "./InstagramAutomation/it.png",
-              caption: postData?.title,
+              caption: postData?.title + " " + postData?.postLink,
               post: "feed",
             })
             .then(async (res: { [key: string]: { [key: string]: string } }) => {
@@ -69,7 +69,7 @@ const postToInstagram = async (postData: any) => {
 
               await currentClient.addComment({
                 mediaId: media.id,
-                text: `Source:${postData?.source}  #wwe #aew #impact #news #wrestlebreak #wrestlingnews #wwe #wweraw #wwenetwork #wwememes #wweuniverse #WWE2k18 #wwenxt #wwesmackdown #wwelive #wwedivas  #WWEFans`,
+                text: `Source:${postData?.source} ${postData?.description} #wwe #aew #impact #news #wrestlebreak #wrestlingnews #wwe #wweraw #wwenetwork #wwememes #wweuniverse #WWE2k18 #wwenxt #wwesmackdown #wwelive #wwedivas  #WWEFans`,
               });
             });
         } else {
