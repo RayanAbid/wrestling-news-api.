@@ -12,6 +12,7 @@ const {
 } = require("../utils/Functions");
 
 module.exports = async () => {
+  return;
   let browser;
 
   browser = await puppeteer.launch({
