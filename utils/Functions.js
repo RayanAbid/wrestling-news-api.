@@ -1,5 +1,4 @@
 const puppeteer = require("puppeteer");
-const { postToInstagram } = require("../InstagramAutomation/Index.js");
 const News = require("../models/News.js");
 
 const fecthwweNews = async (browser) => {
@@ -18,7 +17,7 @@ const fecthwweNews = async (browser) => {
     const images = await page.evaluate(() => {
       const srcs = Array.from(
         document.querySelectorAll("div.card-image-area > div > a > div > img")
-      ).map((image) => image.getAttribute("src"));
+      ).map((image) => image.src);
       return srcs;
     });
 
@@ -37,6 +36,20 @@ const fecthwweNews = async (browser) => {
         document.querySelectorAll("div.card-copy > h2 > a")
       ).map((x) => x.href.trim());
     });
+    const source = await page.evaluate(() => {
+      return Array.from(
+        document.querySelectorAll(
+          "body > div.l-page > div.wwe-landing-page.wwe-landing-page--author.news.ng-scope > div.ng-scope > div > div:nth-child(1) > div.wwe-landing-page-content > div:nth-child(2) > div > div.card-copy > div > span > a"
+        )
+      ).map((x) => x.innerText.trim());
+    });
+    const sourceLink = await page.evaluate(() => {
+      return Array.from(
+        document.querySelectorAll(
+          "body > div.l-page > div.wwe-landing-page.wwe-landing-page--author.news.ng-scope > div.ng-scope > div > div:nth-child(1) > div.wwe-landing-page-content > div:nth-child(2) > div > div.card-copy > div > span > a"
+        )
+      ).map((x) => x.href.trim());
+    });
 
     console.log("scrpae completed");
 
@@ -49,31 +62,24 @@ const fecthwweNews = async (browser) => {
         description: "Read more...",
         postLink: postLink[index],
         date: dates[index],
-        image: "https://www.wwe.com/" + images[index],
-        source: "wwe.com",
+        image: images[index],
+        source: source,
+        sourceLink: sourceLink,
       });
     });
 
-    try {
-      await News.find({ title: result[1]?.title }).exec(async function (
-        err,
-        news
-      ) {
-        if (news.length > 0) {
-          console.log("post exists ");
-          return;
-        } else {
-          console.log("post does not exist ");
+    console.log("post does not exist ", result[0].title);
 
-          postToInstagram(result[0]);
-          await News.insertMany(result, { ordered: false, silent: true });
-          console.log("done fecth");
-        }
+    // postToInstagram(result[0]);
+    await News.insertMany(result, { ordered: false, silent: true })
+      .then((res) => {
+        console.log("done set", res);
+        page.close();
+      })
+      .catch((err) => {
+        page.close();
+        console.error("Now new news found from this source", err);
       });
-    } catch (err) {
-      console.error("Now new news found from this source");
-    }
-    await page.close();
   } catch (err) {
     console.error("Something went wrong", err);
   }
@@ -93,7 +99,7 @@ const fecthAAANews = async (browser) => {
       waitUntil: "domcontentloaded",
     });
     await page.waitForSelector(
-      "#hexadrilatero div.article-header div.article-thumb a"
+      "#hexadrilatero div.article-header div.article-thumb img"
     );
 
     console.log("Browser started and navigated");
@@ -138,17 +144,8 @@ const fecthAAANews = async (browser) => {
     });
 
     try {
-      await News.find({ title: result[0]?.title }).exec(async function (
-        err,
-        news
-      ) {
-        if (news.length > 0) {
-          return;
-        } else {
-          postToInstagram(result[0]);
-          await News.insertMany(result, { ordered: false, silent: true });
-        }
-      });
+      // postToInstagram(result[0]);
+      await News.insertMany(result, { ordered: false, silent: true });
     } catch (err) {
       console.error("Now new news found from this source");
     }
@@ -167,9 +164,7 @@ const fecthROHNews = async (browser) => {
     page.goto("https://www.rohwrestling.com/news", {
       waitUntil: "domcontentloaded",
     });
-    await page.waitForSelector(
-      "#block-system-main > div .view-content > .item-list > ul > li.views-row .field-content a"
-    );
+    await page.waitForSelector("#block-system-main > div img");
 
     console.log("Browser started and navigated");
 
@@ -236,7 +231,7 @@ const fecthAEWNews = async (browser) => {
       waitUntil: "domcontentloaded",
     });
     await page.waitForSelector(
-      ".blog-post-post-list-link-hashtag-hover-color > a"
+      ".gallery-item-visible.gallery-item.gallery-item-preloaded img"
     );
 
     console.log("Browser started and navigated");
@@ -293,21 +288,8 @@ const fecthAEWNews = async (browser) => {
     });
 
     try {
-      await News.find({ title: result[1]?.title }).exec(async function (
-        err,
-        news
-      ) {
-        if (news.length > 0) {
-          console.log("post exists ");
-          return;
-        } else {
-          console.log("post does not exist ");
-
-          postToInstagram(result[1]);
-          await News.insertMany(result, { ordered: false, silent: true });
-          console.log("done fecth");
-        }
-      });
+      await News.insertMany(result, { ordered: false, silent: true });
+      console.log("done fecth");
     } catch (err) {
       console.error("No news found from AEW");
     }
@@ -381,21 +363,9 @@ const fecthCultaholicNews = async (browser) => {
     });
 
     try {
-      await News.find({ title: result[1]?.title }).exec(async function (
-        err,
-        news
-      ) {
-        if (news.length > 0) {
-          console.log("post exists ");
-          return;
-        } else {
-          console.log("post does not exist ");
-
-          postToInstagram(result[0]);
-          await News.insertMany(result, { ordered: false, silent: true });
-          console.log("done fecth");
-        }
-      });
+      // postToInstagram(result[0]);
+      await News.insertMany(result, { ordered: false, silent: true });
+      console.log("done fecth");
     } catch (err) {
       console.error("No news found from AEW");
     }
@@ -413,7 +383,7 @@ const fecthNJPWNews = async (browser) => {
     page.goto("https://www.njpw1972.com/news", {
       waitUntil: "domcontentloaded",
     });
-    await page.waitForSelector("#newsListRow a");
+    await page.waitForSelector("#newsListRow .ph img");
 
     console.log("Browser started and navigated");
 
@@ -485,9 +455,7 @@ const fecthWrestleTalkNews = async (browser) => {
     page.goto("https://wrestletalk.com/news", {
       waitUntil: "domcontentloaded",
     });
-    await page.waitForSelector(
-      "section.search-block.news-block div.search-result h6 > a"
-    );
+    await page.waitForSelector("div.search-result figure > a > img");
 
     console.log("Browser started and navigated");
 
@@ -540,21 +508,8 @@ const fecthWrestleTalkNews = async (browser) => {
       });
     });
     try {
-      await News.find({ title: result[1]?.title }).exec(async function (
-        err,
-        news
-      ) {
-        if (news.length > 0) {
-          console.log("post exists ");
-          return;
-        } else {
-          console.log("post does not exist ");
-
-          postToInstagram(result[0]);
-          await News.insertMany(result, { ordered: false, silent: true });
-          console.log("done fecth");
-        }
-      });
+      await News.insertMany(result, { ordered: false, silent: true });
+      console.log("done fecth");
     } catch (err) {
       console.error("No news found from AEW");
     }

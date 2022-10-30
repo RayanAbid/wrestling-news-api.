@@ -13,10 +13,11 @@ const {
 
 module.exports = async () => {
   return;
+  // return;
   let browser;
 
   browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     args: ["--single-process", "--no-zygote", "--no-sandbox"],
     devtools: false,
   });
@@ -32,13 +33,13 @@ module.exports = async () => {
   });
 
   // AAA
-  cron.schedule("1 */4 * * *", async () => {
+  cron.schedule("*/2 * * * *", async () => {
     await fecthwweNews(browser);
-    await fecthAEWNews(browser);
-    await fecthCultaholicNews(browser);
-    await fecthWrestleTalkNews(browser);
-    await fecthNJPWNews(browser);
-    await fecthROHNews(browser);
-    await fecthAAANews(browser);
+    // await fecthAEWNews(browser);
+    // await fecthCultaholicNews(browser);
+    // await fecthWrestleTalkNews(browser);
+    // await fecthNJPWNews(browser);
+    // await fecthROHNews(browser);
+    // await fecthAAANews(browser);
   });
 };
