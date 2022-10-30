@@ -10,14 +10,14 @@ const fecthwweNews = async (browser) => {
     page.goto("https://www.wwe.com/news", {
       waitUntil: "domcontentloaded",
     });
-    await page.waitForSelector("div.card-copy > h2 > a > span");
+    await page.waitForSelector("div.card-image-area > div > a > div > img");
 
     console.log("Browser started and navigated");
 
     const images = await page.evaluate(() => {
       const srcs = Array.from(
         document.querySelectorAll("div.card-image-area > div > a > div > img")
-      ).map((image) => image.src);
+      ).map((image) => image.getAttribute("src"));
       return srcs;
     });
 
@@ -38,18 +38,17 @@ const fecthwweNews = async (browser) => {
     });
     const source = await page.evaluate(() => {
       return Array.from(
-        document.querySelectorAll(
-          "body > div.l-page > div.wwe-landing-page.wwe-landing-page--author.news.ng-scope > div.ng-scope > div > div:nth-child(1) > div.wwe-landing-page-content > div:nth-child(2) > div > div.card-copy > div > span > a"
-        )
+        document.querySelectorAll("div > div.card-copy > div > span > a")
       ).map((x) => x.innerText.trim());
     });
     const sourceLink = await page.evaluate(() => {
       return Array.from(
-        document.querySelectorAll(
-          "body > div.l-page > div.wwe-landing-page.wwe-landing-page--author.news.ng-scope > div.ng-scope > div > div:nth-child(1) > div.wwe-landing-page-content > div:nth-child(2) > div > div.card-copy > div > span > a"
-        )
+        document.querySelectorAll("div > div.card-copy > div > span > a")
       ).map((x) => x.href.trim());
     });
+
+    console.log("source", source[0]);
+    console.log("sourceLink", sourceLink[0]);
 
     console.log("scrpae completed");
 
@@ -57,21 +56,22 @@ const fecthwweNews = async (browser) => {
 
     var result = [];
     await titleArr.map((title, index) => {
+      console.log("");
       result.push({
         title,
         description: "Read more...",
         postLink: postLink[index],
         date: dates[index],
-        image: images[index],
-        source: source,
-        sourceLink: sourceLink,
+        image: "https://www.wwe.com/" + images[index],
+        source: source[index] ? source[index] : "WWE",
+        sourceLink: sourceLink[index],
       });
     });
 
     console.log("post does not exist ", result[0].title);
 
     // postToInstagram(result[0]);
-    await News.insertMany(result, { ordered: false, silent: true })
+    await News.insertMany(result, { ordered: true, silent: true })
       .then((res) => {
         console.log("done set", res);
         page.close();

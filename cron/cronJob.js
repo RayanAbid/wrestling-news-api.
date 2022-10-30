@@ -12,7 +12,6 @@ const {
 } = require("../utils/Functions");
 
 module.exports = async () => {
-  return;
   // return;
   let browser;
 
@@ -33,13 +32,13 @@ module.exports = async () => {
   });
 
   // AAA
-  cron.schedule("*/2 * * * *", async () => {
+  cron.schedule("*/1 * * * *", async () => {
     await fecthwweNews(browser);
-    // await fecthAEWNews(browser);
-    // await fecthCultaholicNews(browser);
-    // await fecthWrestleTalkNews(browser);
-    // await fecthNJPWNews(browser);
-    // await fecthROHNews(browser);
-    // await fecthAAANews(browser);
+    await fecthAEWNews(browser);
+    await fecthCultaholicNews(browser);
+    await fecthWrestleTalkNews(browser);
+    await fecthNJPWNews(browser);
+    await fecthROHNews(browser);
+    await fecthAAANews(browser);
   });
 };

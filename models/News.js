@@ -8,7 +8,7 @@ const NewsSchema = new mongoose.Schema(
     date: { type: String, trim: true },
     image: { type: String, trim: true, required: true },
     source: { type: String, trim: true, required: true },
-    sourceLink: { type: String, trim: true, required: true },
+    sourceLink: { type: String, trim: true },
   },
   { timestamps: true }
 );
