@@ -1,0 +1,2 @@
+MONGO_DB_URL=mongodb+srv://<name>:<pass>@cluster0.m5thxva.mongodb.net/test
+PORT=3001
