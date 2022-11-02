@@ -24,5 +24,9 @@ const UserSchema = new mongoose.Schema({
     { timestamps: true }
 );
 
+UserSchema.pre('save', function (next) {
+    this.updated = Date.now(); // update the date every time a blog post is saved
+    next();
+});
 
 module.exports = mongoose.model("Users", UserSchema);
