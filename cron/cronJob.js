@@ -12,11 +12,11 @@ const {
 } = require("../utils/Functions");
 
 module.exports = async () => {
-  // return;
+  return;
   let browser;
 
   browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     args: ["--single-process", "--no-zygote", "--no-sandbox"],
     devtools: false,
   });
@@ -32,7 +32,7 @@ module.exports = async () => {
   });
 
   // AAA
-  cron.schedule("*/1 * * * *", async () => {
+  cron.schedule("* */1 * * *", async () => {
     await fecthwweNews(browser);
     await fecthAEWNews(browser);
     await fecthCultaholicNews(browser);
