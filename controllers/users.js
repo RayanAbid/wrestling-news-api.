@@ -78,6 +78,7 @@ exports.login = async (req, res, next) => {
 
     if (!user) {
       res.send({ code: 401, error: true, message: "User not found" });
+      return;
     }
 
     const decodedPassword = await bcrypt.compare(password, user.password);
@@ -88,6 +89,7 @@ exports.login = async (req, res, next) => {
         error: true,
         message: "Wrong email or password",
       });
+      return;
     }
     const accessToken = sign(
       {
@@ -109,12 +111,14 @@ exports.login = async (req, res, next) => {
         accessToken,
       },
     });
+    return;
   } catch (err) {
     res.send({
       code: 500,
       success: false,
       message: err.message,
     });
+    return;
   }
 };
 
