@@ -32,18 +32,19 @@ mongoose
     app.use(useragent.express());
 
     app.get("/", (req, res, next) => {
-      const fileName = "./views/index.html";
-      var options = {
-        root: path.join(__dirname),
-      };
-      res.sendFile(fileName, options, function (err) {
-        if (err) {
-          next(err);
-        } else {
-          console.log("Sent:", fileName);
-          next();
-        }
-      });
+      // const fileName = "./views/index.html";
+      // var options = {
+      //   root: path.join(__dirname),
+      // };
+      // res.sendFile(fileName, options, function (err) {
+      //   if (err) {
+      //     next(err);
+      //   } else {
+      //     console.log("Sent:", fileName);
+      //     next();
+      //   }
+      // });
+      res.send("Hello");
       // res.sendFile("./");
     });
 
