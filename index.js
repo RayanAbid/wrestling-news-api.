@@ -2,8 +2,8 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const cors = require("cors");
-const helmet = require('helmet');
-const useragent = require('express-useragent');
+const helmet = require("helmet");
+const useragent = require("express-useragent");
 require("dotenv").config();
 
 const { mongoose } = require("mongoose");
@@ -14,7 +14,7 @@ app.use(express.static("views"));
 app.use(cors());
 
 // call routes
-const news = require("./routes/News.js");
+const news = require("./routes/news.js");
 const user = require("./routes/user");
 require("./cron/cronJob.js")();
 
@@ -23,12 +23,12 @@ mongoose
     useNewUrlParser: true,
   })
   .then(() => {
-    console.log("DataBase connected")
+    console.log("DataBase connected");
 
     app.use(cors());
     app.use(helmet());
-    app.use(express.json({ limit: '20mb' }));
-    app.use(express.urlencoded({ limit: '20mb', extended: true }));
+    app.use(express.json({ limit: "20mb" }));
+    app.use(express.urlencoded({ limit: "20mb", extended: true }));
     app.use(useragent.express());
 
     app.get("/", (req, res, next) => {
