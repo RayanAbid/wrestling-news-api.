@@ -32,7 +32,7 @@ module.exports = async () => {
   });
 
   // AAA
-  cron.schedule("*/2 * * * *", async () => {
+  cron.schedule("* * * * *", async () => {
     await fecthwweNews(browser);
     await fecthAEWNews(browser);
     await fecthCultaholicNews(browser);
