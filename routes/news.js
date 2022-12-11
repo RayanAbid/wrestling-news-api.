@@ -56,7 +56,7 @@ router.get("/get-all-news", async (req, res) => {
   }
 });
 
-router.get("/get-today-headlines", async (req, res) => {
+router.get("/get-all-sources", async (req, res) => {
   try {
     await News.aggregate([
       {
@@ -67,34 +67,16 @@ router.get("/get-today-headlines", async (req, res) => {
       {
         $group: {
           _id: "$source",
-          news: {
-            $push: "$$ROOT",
-          },
         },
       },
-      {
-        $project: {
-          news: {
-            $slice: ["$news", 5],
-          },
-        },
-      },
-    ]).exec(async function (err, news) {
-      console.log("newsss", news);
+    ]).exec(async function (err, sources) {
+      console.log("newsss", sources);
 
-      var newsArr = [];
-
-      news.map((item) => {
-        newsArr.push(item.news);
-        console.log();
-      });
-
-      const flat = newsArr.flat();
       await res.send({
         status: "🤼 Success",
         success: true,
-        resultLength: flat?.length,
-        news: flat,
+        resultLength: sources?.length,
+        sources: sources,
       });
     });
   } catch (err) {
