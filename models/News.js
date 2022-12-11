@@ -9,6 +9,20 @@ const NewsSchema = new mongoose.Schema(
     image: { type: String, trim: true, required: true },
     source: { type: String, trim: true, required: true },
     sourceLink: { type: String, trim: true },
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+        default: [],
+      },
+    ],
+    dislikes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+        default: [],
+      },
+    ],
   },
   { timestamps: true }
 );
