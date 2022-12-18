@@ -20,7 +20,7 @@ exports.signup = async (req, res, next) => {
       res.send({
         code: 409,
         error: true,
-        message: "First Name is required",
+        message: "Username is required",
       });
     }
 
@@ -57,7 +57,7 @@ exports.signup = async (req, res, next) => {
           id: user.id,
           email: user.email,
           profilePicture: user.profilePicture,
-          token: accessToken,
+          accessToken,
         },
       });
     });

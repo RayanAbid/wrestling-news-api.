@@ -9,10 +9,11 @@ const {
   fecthCultaholicNews,
   fecthWrestleTalkNews,
   fecthAEWNews,
+  fecthNJPWNews,
 } = require("../utils/Functions");
 
 module.exports = async () => {
-  return;
+  // return;
   let browser;
 
   browser = await puppeteer.launch({
@@ -33,12 +34,12 @@ module.exports = async () => {
 
   // AAA
   cron.schedule("* * * * *", async () => {
-    await fecthwweNews(browser);
-    await fecthAEWNews(browser);
-    await fecthCultaholicNews(browser);
-    await fecthWrestleTalkNews(browser);
-    await fecthNJPWNews(browser);
-    await fecthROHNews(browser);
-    await fecthAAANews(browser);
+    // await fecthwweNews(browser);
+    // await fecthAEWNews(browser);
+    // await fecthCultaholicNews(browser);
+    // await fecthWrestleTalkNews(browser);
+    // await fecthNJPWNews(browser);
+    // await fecthROHNews(browser);
+    // await fecthAAANews(browser);
   });
 };

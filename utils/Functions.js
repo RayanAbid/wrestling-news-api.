@@ -36,19 +36,23 @@ const fecthwweNews = async (browser) => {
         document.querySelectorAll("div.card-copy > h2 > a")
       ).map((x) => x.href.trim());
     });
-    const source = await page.evaluate(() => {
-      return Array.from(
-        document.querySelectorAll("div > div.card-copy > div > span > a")
-      ).map((x) => x.innerText.trim());
-    });
-    const sourceLink = await page.evaluate(() => {
-      return Array.from(
-        document.querySelectorAll("div > div.card-copy > div > span > a")
-      ).map((x) => x.href.trim());
-    });
+    // const source = await page.evaluate(() => {
+    //   return Array.from(
+    //     document.querySelectorAll("div > div.card-copy > div > span > a")
+    //   ).map((x) => x.innerText.trim());
+    // });
+    // const sourceLink = await page.evaluate(() => {
+    //   return Array.from(
+    //     document.querySelectorAll("div > div.card-copy > div > span > a")
+    //   ).map((x) => x.href.trim());
+    // });
 
-    console.log("source", source[0]);
-    console.log("sourceLink", sourceLink[0]);
+    // console.log("source", {
+    //   source: source.length,
+    //   titleArr: titleArr?.length,
+    // });
+    // console.log("sourceLink", sourceLink[0]);
+    // return;
 
     console.log("scrpae completed");
 
@@ -63,8 +67,8 @@ const fecthwweNews = async (browser) => {
         postLink: postLink[index],
         date: dates[index],
         image: "https://www.wwe.com/" + images[index],
-        source: source[index] ? source[index] : "WWE",
-        sourceLink: sourceLink[index],
+        source: "WWE",
+        sourceLink: "https://www.wwe.com/news/",
       });
     });
 
