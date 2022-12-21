@@ -56,6 +56,60 @@ router.get("/get-all-news", async (req, res) => {
   }
 });
 
+router.get("/get-specific-source-news/:source", async (req, res) => {
+  try {
+    const source = req?.params?.source;
+    await News.aggregate([
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+      {
+        $match: {
+          source,
+        },
+      },
+      {
+        $group: {
+          _id: "$source",
+          news: {
+            $push: "$$ROOT",
+          },
+        },
+      },
+      {
+        $project: {
+          news: {
+            $slice: ["$news", 25],
+          },
+        },
+      },
+    ]).exec(async function (err, news) {
+      console.log("newsss", news);
+      var newsArr = [];
+
+      news.map((item) => {
+        newsArr.push(item.news);
+        console.log();
+      });
+
+      const flat = newsArr.flat();
+      await res.send({
+        status: "🤼 Success",
+        success: true,
+        resultLength: flat?.length,
+        news: flat,
+      });
+    });
+  } catch (err) {
+    res.send({
+      status: `🤼 failed ${err}`,
+      success: false,
+    });
+  }
+});
+
 router.get("/get-all-sources", async (req, res) => {
   try {
     await News.aggregate([
