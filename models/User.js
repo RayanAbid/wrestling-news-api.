@@ -21,6 +21,11 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    sourcesWanted: [
+      {
+        type: String,
+      },
+    ],
   },
   { timestamps: true }
 );
