@@ -10,6 +10,7 @@ const {
   fecthWrestleTalkNews,
   fecthAEWNews,
   fecthNJPWNews,
+  fecthWrestleFestDXBNews,
 } = require("../utils/Functions");
 
 module.exports = async () => {
@@ -31,6 +32,15 @@ module.exports = async () => {
   mainPage.goto("https://example.com/", {
     waitUntil: "domcontentloaded",
   });
+
+  // await fecthWrestleFestDXBNews();
+  // await fecthwweNews(browser);
+  // await fecthAEWNews(browser);
+  // await fecthCultaholicNews(browser);
+  // await fecthWrestleTalkNews(browser);
+  // await fecthNJPWNews(browser);
+  // await fecthROHNews(browser);
+  // await fecthAAANews(browser);
 
   // AAA
   cron.schedule("* * * * *", async () => {

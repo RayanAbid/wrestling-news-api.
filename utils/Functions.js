@@ -1,5 +1,7 @@
 const puppeteer = require("puppeteer");
 const News = require("../models/News.js");
+const axios = require("axios");
+const { dummy } = require("./dummyVal.js");
 
 const fecthwweNews = async (browser) => {
   // WWe
@@ -523,6 +525,74 @@ const fecthWrestleTalkNews = async (browser) => {
   }
 };
 
+const fecthWrestleFestDXBNews = async (browser) => {
+  console.log("Get WrestleFestDXB", process.env.INSTAGRAM_API_KEY);
+
+  try {
+    // const options = {
+    //   method: "GET",
+    //   url: "https://instagram28.p.rapidapi.com/medias",
+    //   params: { user_id: "51343412443", batch_size: "20" },
+    //   headers: {
+    //     "X-RapidAPI-Key": process.env.INSTAGRAM_API_KEY,
+    //     "X-RapidAPI-Host": "instagram28.p.rapidapi.com",
+    //   },
+    // };
+
+    // await axios
+    //   .request(options)
+    //   .then(async function (response) {
+    // console.log(
+    //   "testing the insta response",
+
+    //   {
+    //     text: response.data?.data?.user?.edge_owner_to_timeline_media?.edges[0]?.node?.edge_media_to_caption?.edges[0]?.node?.text,
+    //     image:
+    //       response.data?.data?.user?.edge_owner_to_timeline_media?.edges[0]
+    //         ?.node?.thumbnail_src,
+    //   }
+    // );
+
+    // const resp = response.data?.data?.user?.edge_owner_to_timeline_media?.edges[0]
+    const resp = dummy[0]?.data?.user?.edge_owner_to_timeline_media?.edges;
+    // console.log(
+    //   "testing the insta response",
+
+    //   {
+    //     text: resp?.node?.edge_media_to_caption?.edges[0]?.node?.text,
+    //     image: resp?.node?.thumbnail_src,
+    //   }
+    // );
+
+    var result = [];
+    await resp.map((item, index) => {
+      result.push({
+        title: item?.node?.edge_media_to_caption?.edges[0]?.node?.text
+          .split("\n")
+          .toString(),
+        description: "Read more...",
+        postLink: `https://www.instagram.com/p/${item?.node?.shortcode}`,
+        date: new Date(),
+        image: item?.node?.thumbnail_src,
+        source: "WrestleFest DXB",
+      });
+    });
+    console.log("this is result", result[1]);
+    try {
+      await News.insertMany(result, { ordered: false, silent: true });
+      console.log("done fecth");
+    } catch (err) {
+      console.error("No news found from AEW", err);
+    }
+    // })
+    // .catch(function (error) {
+    //   console.error(error);
+    // });
+  } catch (err) {
+    console.error("Something went wrong", err);
+  }
+};
+
 module.exports = {
   fecthwweNews,
   fecthAAANews,
@@ -530,5 +600,6 @@ module.exports = {
   fecthAEWNews,
   fecthNJPWNews,
   fecthWrestleTalkNews,
+  fecthWrestleFestDXBNews,
   fecthCultaholicNews,
 };
