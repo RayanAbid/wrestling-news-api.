@@ -170,36 +170,33 @@ const fecthROHNews = async (browser) => {
     page.goto("https://www.rohwrestling.com/news", {
       waitUntil: "domcontentloaded",
     });
-    await page.waitForSelector("#block-system-main > div img");
+
+    await page.waitForSelector(".image-style-image-listing-300x170");
 
     console.log("Browser started and navigated");
 
     const images = await page.evaluate(() => {
       const srcs = Array.from(
-        document.querySelectorAll("#block-system-main > div img")
+        document.querySelectorAll(".image-style-image-listing-300x170")
       ).map((image) => image.getAttribute("src"));
       return srcs;
     });
 
     const titleArr = await page.evaluate(() => {
-      return Array.from(
-        document.querySelectorAll(
-          "#block-system-main > div > div.view-content > div > ul > li.views-row > div > span > a > div > div:nth-child(2)"
-        )
-      ).map((x) => x.innerText.trim());
+      return Array.from(document.querySelectorAll(".block-title")).map((x) =>
+        x.innerText.trim()
+      );
     });
     const postLink = await page.evaluate(() => {
-      return Array.from(
-        document.querySelectorAll(
-          "#block-system-main > div .view-content > .item-list > ul > li.views-row .field-content a"
-        )
-      ).map((x) => x.href.trim());
+      return Array.from(document.querySelectorAll(".field-content > a")).map(
+        (x) => x.href.trim()
+      );
     });
-    const description = await page.evaluate(() => {
-      return Array.from(
-        document.querySelectorAll("#block-system-main > div .int-txt")
-      ).map((x) => x.innerText.trim());
-    });
+    // const description = await page.evaluate(() => {
+    //   return Array.from(
+    //     document.querySelectorAll("#block-system-main > div .int-txt")
+    //   ).map((x) => x.innerText.trim());
+    // });
     console.log("scrpae completed");
 
     console.log("browser closed");
@@ -208,7 +205,7 @@ const fecthROHNews = async (browser) => {
     await titleArr.map((title, index) => {
       result.push({
         title,
-        description: description[index],
+        description: "Read more..",
         postLink: postLink[index],
         date: "",
         image: images[index],

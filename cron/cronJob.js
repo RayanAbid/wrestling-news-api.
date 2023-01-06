@@ -33,7 +33,6 @@ module.exports = async () => {
     waitUntil: "domcontentloaded",
   });
 
-  // await fecthWrestleFestDXBNews();
   // await fecthwweNews(browser);
   // await fecthAEWNews(browser);
   // await fecthCultaholicNews(browser);
