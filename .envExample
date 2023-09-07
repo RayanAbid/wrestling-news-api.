@@ -1,2 +1,2 @@
-MONGO_DB_URL = mongodb+srv://admin:abcd1234@cluster0.m5thxva.mongodb.net/wrestle?retryWrites=true&w=majority
-JWTSECRET=gabbermithudi
+MONGO_DB_URL = 
+JWTSECRET=
